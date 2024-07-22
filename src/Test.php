@@ -17,8 +17,11 @@ class Test
 
     public function is_array($value)
     {
-        if (is_array($value) && isset($value[0])) {
-            return true;
+        if (is_array($value)) {
+            $jsonObjectString = json_encode($value);
+            if (strpos($jsonObjectString, "[") === 0) {
+                return true;
+            }
         }
         return false;
     }

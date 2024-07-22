@@ -174,7 +174,7 @@ class Json
         }, $param);
     }
 
-    protected function getDataSource($config, $current_context) {
+    public function getDataSource($config, $current_context) {
 
         $_data_source = $config['_data_source'] ?? '';
 

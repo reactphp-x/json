@@ -9,11 +9,18 @@
             "src/helpers.php"
         ]
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Reactphp\\Framework\\Json\\Tests\\": "tests/"
+        }
+    },
     "authors": [
         {
             "name": "wpjscc",
             "email": "wpjscc@gmail.com"
         }
     ],
-    "require": {}
+    "require-dev": {
+        "phpunit/phpunit": "^11.2"
+    }
 }

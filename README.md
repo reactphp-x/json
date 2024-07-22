@@ -85,5 +85,12 @@ echo json_encode($json->getJson([
 ])) . PHP_EOL;
 ```
 
+## test
+
+```
+./vendor/bin/phpunit tests/
+```
+
+
 ## License
 MIT
