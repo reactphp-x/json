@@ -5,9 +5,9 @@ namespace Reactphp\Framework\Json;
 class Json
 {
 
-    public $data_sources = [];
-    public $data_structures = [];
-    public $data_options = [];
+    protected $data_sources = [];
+    protected $data_structures = [];
+    protected $data_options = [];
 
     protected $test;
 
@@ -40,7 +40,7 @@ class Json
         }
     }
 
-    public function replaceParams($params, $current_context, $_data_option = [])
+    protected function replaceParams($params, $current_context, $_data_option = [])
     {
 
         // 二维数组递归
@@ -132,7 +132,7 @@ class Json
 
     }
 
-    public function replaceParam($param, $obj, $_data_option)
+    protected function replaceParam($param, $obj, $_data_option)
     {
 
         if (!$this->test->is_string($param)) {
@@ -174,7 +174,7 @@ class Json
         }, $param);
     }
 
-    public function getDataSource($config, $current_context) {
+    protected function getDataSource($config, $current_context) {
 
         $_data_source = $config['_data_source'] ?? '';
 
@@ -241,7 +241,7 @@ class Json
     }
 
 
-    public function getDataOption($params, $isObject = false)
+    protected function getDataOption($params, $isObject = false)
     {
         if ($isObject || $this->test->is_object($params)) {
             
@@ -277,7 +277,7 @@ class Json
         return $_data_option;
     }
 
-    public function getDataStructure($config) {
+    protected function getDataStructure($config) {
 
         $_data_structure = $config['_data_structure'] ?? '';
 
