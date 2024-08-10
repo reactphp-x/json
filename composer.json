@@ -1,9 +1,9 @@
 {
-    "name": "reactphp-framework/json",
+    "name": "reactphp-x/json",
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Reactphp\\Framework\\Json\\": "src/"
+            "ReactphpX\\Json\\": "src/"
         },
         "files": [
             "src/helpers.php"
@@ -11,7 +11,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Reactphp\\Framework\\Json\\Tests\\": "tests/"
+            "ReactphpX\\Json\\Tests\\": "tests/"
         }
     },
     "authors": [

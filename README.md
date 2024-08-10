@@ -1,9 +1,9 @@
-# reactphp-framework/json
+# reactphp-x/json
 
 ## install
 
 ```
-composer require reactphp-framework/json -vvv
+composer require reactphp-x/json -vvv
 ```
 
 ## Usage
@@ -11,7 +11,7 @@ composer require reactphp-framework/json -vvv
 ```php
 require __DIR__ . "/vendor/autoload.php";
 
-use Reactphp\Framework\Json\Json;
+use ReactphpX\Json\Json;
 
 
 $json = new Json();

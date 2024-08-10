@@ -2,7 +2,7 @@
 
 require __DIR__ . "./../vendor/autoload.php";
 
-use Reactphp\Framework\Json\Json;
+use ReactphpX\Json\Json;
 
 
 $json = new Json();

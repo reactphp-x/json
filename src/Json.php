@@ -1,6 +1,6 @@
 <?php
 
-namespace Reactphp\Framework\Json;
+namespace ReactphpX\Json;
 
 class Json
 {

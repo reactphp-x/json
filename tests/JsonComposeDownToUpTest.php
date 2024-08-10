@@ -1,8 +1,8 @@
 <?php
 
-namespace Reactphp\Framework\Json\Tests;
+namespace ReactphpX\Json\Tests;
 
-use Reactphp\Framework\Json\Json;
+use ReactphpX\Json\Json;
 
 
 
