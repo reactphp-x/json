@@ -63,7 +63,10 @@ class Json
                 // {_data_option: ':id'}
                 // {_data_option: 'xxxx'} // 会从data_options中取
                 if (isset($params['_data_option'])) {
-                    $params['_data_option'] = $this->replaceParams($this->getDataOption($params, true), $current_context, $_data_option);
+                    if (isset($params['_data_option']['_not_replace']) && $params['_data_option']['_not_replace']) {
+                    } else {
+                        $params['_data_option'] = $this->replaceParams($this->getDataOption($params, true), $current_context, $_data_option);
+                    }
                 } else {
                     // 透传参数
                     $params['_data_option'] = $_data_option;
@@ -79,7 +82,11 @@ class Json
                 }
 
                 if (isset($params['_data_option'])) {
-                    $params['_data_option'] = $this->replaceParams($this->getDataOption($params, true), $current_context, $_data_option);
+                    if (isset($params['_data_option']['_not_replace']) && $params['_data_option']['_not_replace']) {
+                        
+                    } else {
+                        $params['_data_option'] = $this->replaceParams($this->getDataOption($params, true), $current_context, $_data_option);
+                    }
                 } else {
                     $params['_data_option'] = $_data_option;
                 }
