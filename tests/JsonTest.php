@@ -30,13 +30,13 @@ class JsonTest extends TestCase
         ]);
 
         $this->json->registerDataSource('user_post', [
-            "_data_source" => "user",
-            "_data_structure" => [
+            "@source" => "user",
+            "@structure" => [
                 "id" => ":id",
                 "name" => ":name",
                 "post" => [
-                    "_data_source" => "post",
-                    "_data_structure" => [
+                    "@source" => "post",
+                    "@structure" => [
                         "id" => ":id",
                         "name" => ":name"
                     ]
@@ -48,7 +48,7 @@ class JsonTest extends TestCase
             return [
                 'id' => 3,
                 'name' => 'Hello user_function',
-                "data_option" => $config['_data_option'] ?? []
+                "data_option" => $config['@option'] ?? []
             ];
         });
 
@@ -56,20 +56,20 @@ class JsonTest extends TestCase
             return [
                 'id' => 10,
                 'name' => 'Hello user_function_json',
-                "data_option" => $config['_data_option'] ?? [],
+                "data_option" => $config['@option'] ?? [],
                 'post' => $json->getJson([
-                    "_data_source" => "post"
+                    "@source" => "post"
                 ])
             ];
         });
 
         $this->json->registerDataSource('user_function_quote', [
-            "_data_source" => "user_function",
-            "_data_context" => [
+            "@source" => "user_function",
+            "@context" => [
                 "id" => ":id",
                 "default" => 1
             ],
-            "_data_option" => "user_option",
+            "@option" => "user_option",
         ]);
 
         $this->json->registerDataOption('user_option', [
@@ -84,10 +84,10 @@ class JsonTest extends TestCase
 
         $this->json->registerDataStructure('user_structure', [
             'id' => [
-                "_data_structure" => "id",
+                "@structure" => "id",
             ],
             'name' => [
-                "_data_structure" => "name",
+                "@structure" => "name",
             ],
         ]);
 
@@ -97,13 +97,13 @@ class JsonTest extends TestCase
         ]);
 
         $this->json->registerDataStructure('user_post_structure', [
-            "_data_source" => "user",
-            "_data_structure" => [
+            "@source" => "user",
+            "@structure" => [
                 "id" => ":id",
                 "name" => ":name",
                 "post" => [
-                    "_data_source" => "post",
-                    "_data_structure" => [
+                    "@source" => "post",
+                    "@structure" => [
                         "id" => ":id",
                         "name" => ":name"
                     ]
@@ -113,10 +113,10 @@ class JsonTest extends TestCase
 
         $this->json->registerDataStructure('post_structure', [
             'id' => [
-                "_data_structure" => "id",
+                "@structure" => "id",
             ],
             'name' => [
-                "_data_structure" => "name",
+                "@structure" => "name",
             ],
         ]);
 
@@ -131,39 +131,39 @@ class JsonTest extends TestCase
         $array = $this->json->getJson([
             "user" => ":user",
             "user_1" => [
-                "_data_source" => "user",
+                "@source" => "user",
             ],
             "user_1-1" => [
-                "_data_source" => [
-                    "_data_source" => "user",
+                "@source" => [
+                    "@source" => "user",
                 ],
             ],
             "user_1-2" => [
-                "_data_source" => [
-                    "_data_source" => "user",
-                    "_data_structure" => "user"
+                "@source" => [
+                    "@source" => "user",
+                    "@structure" => "user"
                 ],
             ],
             "user_1-3" => [
-                "_data_source" => [
-                    "_data_source" => "user",
-                    "_data_structure" => [
+                "@source" => [
+                    "@source" => "user",
+                    "@structure" => [
                         "id" => ":id",
                         "name" => ":name"
                     ]
                 ],
             ],
             "user_2" => [
-                "_data_source" => "user",
-                "_data_structure" => "user"
+                "@source" => "user",
+                "@structure" => "user"
             ],
             "user_structure" => [
-                "_data_source" => "user",
-                "_data_structure" => "user_structure"
+                "@source" => "user",
+                "@structure" => "user_structure"
             ],
             "user_5" => [
-                "_data_source" => "user",
-                "_data_structure" => [
+                "@source" => "user",
+                "@structure" => [
                     "id" => ":id",
                     "name" => ":name"
                 ]
@@ -175,7 +175,7 @@ class JsonTest extends TestCase
             'name' => 'Hello User',
         ];
 
-        $this->assertEquals($this->json->getDataSource(["_data_source" => "user"], []), $user);
+        $this->assertEquals($this->json->getDataSource(["@source" => "user"], []), $user);
 
         foreach ($array as $testuser) {
             $this->assertEquals($testuser, $user);
@@ -194,13 +194,13 @@ class JsonTest extends TestCase
             ]
         ];
         $array = $this->json->getJson([
-            "_data_source" => "user",
-            "_data_structure" => [
+            "@source" => "user",
+            "@structure" => [
                 "id" => ":id",
                 "name" => ":name",
                 "post" => [
-                    "_data_source" => "post",
-                    "_data_structure" => [
+                    "@source" => "post",
+                    "@structure" => [
                         "id" => ":id",
                         "name" => ":name"
                     ]
@@ -210,14 +210,14 @@ class JsonTest extends TestCase
         $this->assertEquals($array, $user_post);
 
         $array = $this->json->getJson([
-            "_data_source" => "user",
-            "_data_structure" => "user_post_structure"
+            "@source" => "user",
+            "@structure" => "user_post_structure"
         ]);
 
         $this->assertEquals($array, $user_post);
 
         $array = $this->json->getJson([
-            "_data_source" => "user_post",
+            "@source" => "user_post",
         ]);
         $this->assertEquals($array, $user_post);
 
@@ -234,7 +234,7 @@ class JsonTest extends TestCase
         ];
 
         $array = $this->json->getJson([
-            "_data_source" => "user_function",
+            "@source" => "user_function",
         ]);
 
         $this->assertEquals($array, $userFunction);
@@ -251,8 +251,8 @@ class JsonTest extends TestCase
         ];
 
         $array = $this->json->getJson([
-            "_data_source" => "user_function",
-            "_data_option" => [
+            "@source" => "user_function",
+            "@option" => [
                 "function_id" => 1
             ]
         ]);
@@ -271,11 +271,11 @@ class JsonTest extends TestCase
         ];
 
         $array = $this->json->getJson([
-            "_data_source" => "user_function",
-            "_data_option" => [
+            "@source" => "user_function",
+            "@option" => [
                 "function_id" => ":id"
             ],
-            "_data_context" => [
+            "@context" => [
                 "id" => 1
             ]
         ]);
@@ -294,12 +294,12 @@ class JsonTest extends TestCase
         ];
 
         $array = $this->json->getJson([
-            "_data_source" => "user_function",
-            "_data_option" => [
+            "@source" => "user_function",
+            "@option" => [
                 "function_id" => ":id"
             ],
-            "_data_context" => [
-                "_data_source" => "user",
+            "@context" => [
+                "@source" => "user",
             ]
         ]);
 
@@ -319,7 +319,7 @@ class JsonTest extends TestCase
         ];
 
         $array = $this->json->getJson([
-            "_data_source" => "user_function_json",
+            "@source" => "user_function_json",
         ]);
 
         $this->assertEquals($array, $v);
@@ -333,13 +333,13 @@ class JsonTest extends TestCase
         ];
 
         $array = $this->json->getJson([
-            "_data_source" => "user",
-            "_data_structure" => [
+            "@source" => "user",
+            "@structure" => [
                 "id" => ":id",
                 "name" => ":name",
                 "user_function" => [
-                    "_data_source" => "user_function",
-                    "_data_option" => "user_option",
+                    "@source" => "user_function",
+                    "@option" => "user_option",
                 ]
             ]
         ]);
@@ -352,13 +352,13 @@ class JsonTest extends TestCase
         ];
 
         $array = $this->json->getJson([
-            "_data_source" => "user",
-            "_data_structure" => [
+            "@source" => "user",
+            "@structure" => [
                 "id" => ":id",
                 "name" => ":name",
                 "user_function" => [
-                    "_data_source" => "user_function",
-                    "_data_option" => [
+                    "@source" => "user_function",
+                    "@option" => [
                         "user_id" => 2,
                         "default_user_id" => 1
                     ],
@@ -374,14 +374,14 @@ class JsonTest extends TestCase
         ];
 
         $array = $this->json->getJson([
-            "_data_source" => "user",
-            "_data_structure" => [
+            "@source" => "user",
+            "@structure" => [
                 "id" => ":id",
                 "name" => ":name",
                 "user_function" => [
-                    "_data_source" => "user_function",
-                    "_data_option" => "user_option",
-                    "_data_context" => [
+                    "@source" => "user_function",
+                    "@option" => "user_option",
+                    "@context" => [
                         "id" => 3
                     ]
                 ]
@@ -396,17 +396,17 @@ class JsonTest extends TestCase
         ];
 
         $array = $this->json->getJson([
-            "_data_source" => "user",
-            "_data_structure" => [
+            "@source" => "user",
+            "@structure" => [
                 "id" => ":id",
                 "name" => ":name",
                 "user_function" => [
-                    "_data_source" => "user_function",
-                    "_data_option" => [
+                    "@source" => "user_function",
+                    "@option" => [
                         "user_id" => ":id",
                         "default_user_id" => 1
                     ],
-                    "_data_context" => [
+                    "@context" => [
                         "id" => 3,
                     ]
                 ]
@@ -430,7 +430,7 @@ class JsonTest extends TestCase
         ];
 
         $array = $this->json->getJson([
-            "_data_source" => "user_function_quote",
+            "@source" => "user_function_quote",
         ]);
 
         $this->assertEquals($array, $v);
@@ -445,8 +445,8 @@ class JsonTest extends TestCase
         ];
 
         $array = $this->json->getJson([
-            "_data_source" => "user_function_quote",
-            "_data_context" => [
+            "@source" => "user_function_quote",
+            "@context" => [
                 "id" => 1
             ],
         ]);
@@ -464,8 +464,8 @@ class JsonTest extends TestCase
 
 
         $array = $this->json->getJson([
-            "_data_source" => "user_function_quote",
-            "_data_context" => [
+            "@source" => "user_function_quote",
+            "@context" => [
                 "id" => 3
             ],
         ]);
@@ -482,9 +482,9 @@ class JsonTest extends TestCase
         ];
 
         $array = $this->json->getJson([
-            "_data_source" => "user_function_quote",
-            "_data_context" => [
-                "_data_source" => "comment",
+            "@source" => "user_function_quote",
+            "@context" => [
+                "@source" => "comment",
             ],
         ]);
         $this->assertEquals($array, $v);
@@ -501,19 +501,19 @@ class JsonTest extends TestCase
         $array = $this->json->getJson([
             "user" => ':user',
             "user_1" => [
-                "_data_source" => "user",
+                "@source" => "user",
             ],
             "user_2" => [
-                "_data_source" => "user",
-                "_data_structure" => "user"
+                "@source" => "user",
+                "@structure" => "user"
             ],
             "user_structure" => [
-                "_data_source" => "user",
-                "_data_structure" => "user_structure"
+                "@source" => "user",
+                "@structure" => "user_structure"
             ],
             "user_5" => [
-                "_data_source" => "user",
-                "_data_structure" => [
+                "@source" => "user",
+                "@structure" => [
                     "id" => ":id",
                     "name" => ":name"
                 ]
@@ -522,26 +522,26 @@ class JsonTest extends TestCase
             "user_id" => ":user.id",
             "user_function" => ':user_function',
             "user_option" => [
-                "_data_source" => "user",
-                "_data_structure" => [
+                "@source" => "user",
+                "@structure" => [
                     "id" => ":id",
                     "name" => ":name",
                     "post" => [
-                        "_data_source" => "user_function",
-                        "_data_option" => "user_option",
+                        "@source" => "user_function",
+                        "@option" => "user_option",
                     ]
                 ]
 
             ],
             "user_overwrite_option" => [
-                "_data_source" => 'user',
-                "_data_structure" => [
+                "@source" => 'user',
+                "@structure" => [
                     "id" => ":id",
                     "name" => ":name",
                     "post" => [
-                        "_data_source" => "user_function",
-                        "_data_option" => "user_option",
-                        "_data_context" => [
+                        "@source" => "user_function",
+                        "@option" => "user_option",
+                        "@context" => [
                             "id" => "10"
                         ]
                     ]
@@ -549,41 +549,41 @@ class JsonTest extends TestCase
 
             ],
             "user_function_quote" => [
-                "_data_source" => 'user_function_quote',
-                "_data_context" => [
+                "@source" => 'user_function_quote',
+                "@context" => [
                     "id" => "10"
                 ],
             ],
 
 
             "post" => [
-                "_data_source" => "post",
-                "_data_structure" => "post"
+                "@source" => "post",
+                "@structure" => "post"
             ],
             "post_structure" => [
-                "_data_source" => "post",
-                "_data_structure" => "post_structure"
+                "@source" => "post",
+                "@structure" => "post_structure"
             ],
             "post2" => [
-                "_data_source" => "post",
-                "_data_structure" => [
+                "@source" => "post",
+                "@structure" => [
                     "id" => ":id",
                     "name" => ":name"
                 ]
             ],
             "user_post" => ":user_post",
             "user_post" => [
-                "_data_source" => "user_post",
-                "_data_structure" => [
+                "@source" => "user_post",
+                "@structure" => [
                     "id" => ":id",
                     "name" => ":name",
                     "post" => [
-                        "_data_source" => ":post",
-                        "_data_structure" => [
+                        "@source" => ":post",
+                        "@structure" => [
                             "id" => ":id",
                             "user_function_quote" => [
-                                "_data_source" => 'user_function_quote',
-                                "_data_context" => [
+                                "@source" => 'user_function_quote',
+                                "@context" => [
                                     "id" => "12"
                                 ],
                             ],
@@ -600,9 +600,9 @@ class JsonTest extends TestCase
     public function testNestStructure()
     {
         $array = $this->json->getJson([
-            "_data_source" => "user",
-            "_data_structure" => [
-                "_data_structure" => [
+            "@source" => "user",
+            "@structure" => [
+                "@structure" => [
                     "id" => ":id",
                     "name" => ":name"
                 ]
@@ -619,9 +619,9 @@ class JsonTest extends TestCase
     public function testReplaceString()
     {
         $array = $this->json->getJson([
-            "_data_source" => "user",
-            "_data_structure" => [
-                "_data_structure" => [
+            "@source" => "user",
+            "@structure" => [
+                "@structure" => [
                     "id" => "http://:id",
                     "name" => ":name"
                 ]
@@ -637,9 +637,9 @@ class JsonTest extends TestCase
     public function testTwoColon()
     {
         $array = $this->json->getJson([
-            "_data_source" => "user",
-            "_data_structure" => [
-                "_data_structure" => [
+            "@source" => "user",
+            "@structure" => [
+                "@structure" => [
                     "id_name" => ":id :name",
                 ]
             ]
@@ -653,8 +653,8 @@ class JsonTest extends TestCase
     public function testDataCOntext()
     {
         $array = $this->json->getJson([
-            "_data_source" => ":user",
-            "_data_context" => [
+            "@source" => ":user",
+            "@context" => [
                 "user" => [
                     "id" => 2,
                     "name" => "Hello User2",
@@ -678,7 +678,7 @@ class JsonTest extends TestCase
         });
 
         $array = $this->json->getJson([
-            "_data_source" => "data_source_function",
+            "@source" => "data_source_function",
         ]);
 
         $this->assertEquals($array, [
@@ -690,11 +690,11 @@ class JsonTest extends TestCase
 
         $this->json->registerDataSource('data_source_function', function ($json, $config = []) {
             return [
-                "_data_source" => "user",
+                "@source" => "user",
             ];
         });
         $array = $this->json->getJson([
-            "_data_source" => "data_source_function",
+            "@source" => "data_source_function",
         ]);
         $this->assertEquals($array, [
             'id' => 1,

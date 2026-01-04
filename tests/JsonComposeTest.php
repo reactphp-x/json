@@ -15,7 +15,7 @@ class JsonComposeTest extends TestCase
         parent::setUp();
         $this->json = new Json();
         $this->json->registerDataSource('http', function ($json, $config) {
-            $_data_option = $config['_data_option'] ?? [];
+            $_data_option = $config['@option'] ?? [];
             $id = $_data_option['params']['id'] ?? 0;
             $apiDatas = [
                 '1' => [
@@ -47,13 +47,13 @@ class JsonComposeTest extends TestCase
         });
 
         $this->json->registerDataSource('transform', function ($json, $config) {
-            $_data_option = $config['_data_option'] ?? [];
+            $_data_option = $config['@option'] ?? [];
             $data = $_data_option['data'] ?? [];
             return $json->getJson([
-                "_data_source" => ":*",
-                "_data_context" => $data,
-                "_data_structure" => [
-                    "_is_support_array" => true,
+                "@source" => ":*",
+                "@context" => $data,
+                "@structure" => [
+                    "@is_array" => true,
                     "id" => ":id",
                     "name" => ":name",
                 ]
@@ -61,7 +61,7 @@ class JsonComposeTest extends TestCase
         });
 
         $this->json->registerDataSource('insertDatabase', function ($json, $config) {
-            $_data_option = $config['_data_option'] ?? [];
+            $_data_option = $config['@option'] ?? [];
             $table = $_data_option['table'] ?? '';
             $data = $_data_option['data'] ?? [];
             return count($data);
@@ -89,8 +89,8 @@ class JsonComposeTest extends TestCase
     {
 
         $array = $this->json->getJson([
-            "_data_source" => "http",
-            "_data_option" => [
+            "@source" => "http",
+            "@option" => [
                 "params" => [
                     "id" => 1
                 ]
@@ -109,8 +109,8 @@ class JsonComposeTest extends TestCase
         ]);
 
         $array = $this->json->getJson([
-            "_data_source" => "http",
-            "_data_option" => [
+            "@source" => "http",
+            "@option" => [
                 "params" => [
                     "id" => 3
                 ]
@@ -136,13 +136,13 @@ class JsonComposeTest extends TestCase
     public function testTransform()
     {
         $array = $this->json->getJson([
-            "_data_source" => "transform",
-            "_data_option" => [
+            "@source" => "transform",
+            "@option" => [
                 "data" => ":*"
             ],
-            "_data_context" => [
-                "_data_source" => "http",
-                "_data_option" => [
+            "@context" => [
+                "@source" => "http",
+                "@option" => [
                     "params" => [
                         "id" => 1
                     ]
@@ -162,13 +162,13 @@ class JsonComposeTest extends TestCase
         ]);
 
         $array = $this->json->getJson([
-            "_data_source" => "transform",
-            "_data_option" => [
+            "@source" => "transform",
+            "@option" => [
                 "data" => ":*"
             ],
-            "_data_context" => [
-                "_data_source" => "http",
-                "_data_option" => [
+            "@context" => [
+                "@source" => "http",
+                "@option" => [
                     "params" => [
                         "id" => 3
                     ]
@@ -195,8 +195,8 @@ class JsonComposeTest extends TestCase
     public function testInsertDatabase()
     {
         $row = $this->json->getJson([
-            "_data_source" => "insertDatabase",
-            "_data_option" => [
+            "@source" => "insertDatabase",
+            "@option" => [
                 "table" => "xxxxx",
                 "data" => [
                     [
@@ -214,8 +214,8 @@ class JsonComposeTest extends TestCase
         $this->assertTrue($row === 2);
 
         $row = $this->json->getJson([
-            "_data_source" => "insertDatabase",
-            "_data_option" => [
+            "@source" => "insertDatabase",
+            "@option" => [
                 "table" => "xxxxx",
                 "data" => [
                     [
@@ -240,7 +240,7 @@ class JsonComposeTest extends TestCase
     public function testConfigs()
     {
         $array = $this->json->getJson([
-            "_data_source" => "configs",
+            "@source" => "configs",
         ]);
 
         $this->assertEquals($array, [
@@ -263,25 +263,25 @@ class JsonComposeTest extends TestCase
     {
         // 自上而下
         $array = $this->json->getJson([
-            "_data_source" => "configs",
-            "_data_structure" => [
-                "_is_support_array" => true,
+            "@source" => "configs",
+            "@structure" => [
+                "@is_array" => true,
                 "row" => [
-                    "_data_source" => "insertDatabase",
-                    "_data_option" => [
+                    "@source" => "insertDatabase",
+                    "@option" => [
                         "table" => ":table",
                         "data" => ":data",
                     ],
-                    "_data_context" => [
+                    "@context" => [
                         "table" => ":table",
                         "data" => [
-                            "_data_source" => "transform",
-                            "_data_option" => [
+                            "@source" => "transform",
+                            "@option" => [
                                 "data" => ":*"
                             ],
-                            "_data_context" => [
-                                "_data_source" => "http",
-                                "_data_option" => [
+                            "@context" => [
+                                "@source" => "http",
+                                "@option" => [
                                     "params" => ":params",
                                     "test" => 'test'
                                 ]
@@ -307,13 +307,13 @@ class JsonComposeTest extends TestCase
     {
         $this->json->registerDataSource('fetch_and_transform', function ($json, $config) {
             return [
-                "_data_source" => "transform",
-                "_data_option" => [
+                "@source" => "transform",
+                "@option" => [
                     "data" => ":*"
                 ],
-                "_data_context" => [
-                    "_data_source" => "http",
-                    "_data_option" => [
+                "@context" => [
+                    "@source" => "http",
+                    "@option" => [
                         "params" => ":params"
                     ]
                 ]
@@ -321,20 +321,20 @@ class JsonComposeTest extends TestCase
         });
 
         $array = $this->json->getJson([
-            "_data_source" => "configs",
-            "_data_structure" => [
-                "_is_support_array" => true,
+            "@source" => "configs",
+            "@structure" => [
+                "@is_array" => true,
                 "row" => [
-                    "_data_source" => "insertDatabase",
-                    "_data_option" => [
+                    "@source" => "insertDatabase",
+                    "@option" => [
                         "table" => ":table",
                         "data" => ":data",
                     ],
-                    "_data_context" => [
+                    "@context" => [
                         "table" => ":table",
                         "data" => [
-                            "_data_source" => "fetch_and_transform",
-                            "_data_context" => [
+                            "@source" => "fetch_and_transform",
+                            "@context" => [
                                 "params" => ":params",
                             ]
                         ]
@@ -357,13 +357,13 @@ class JsonComposeTest extends TestCase
     {
         $this->json->registerDataSource('fetch_and_transform', function ($json, $config) {
             return [
-                "_data_source" => "transform",
-                "_data_option" => [
+                "@source" => "transform",
+                "@option" => [
                     "data" => ":*"
                 ],
-                "_data_context" => [
-                    "_data_source" => "http",
-                    "_data_option" => [
+                "@context" => [
+                    "@source" => "http",
+                    "@option" => [
                         "params" => ":params"
                     ]
                 ]
@@ -372,16 +372,16 @@ class JsonComposeTest extends TestCase
 
         $this->json->registerDataSource('insert_database_by_api', function ($json, $config) {
             return [
-                "_data_source" => "insertDatabase",
-                "_data_option" => [
+                "@source" => "insertDatabase",
+                "@option" => [
                     "table" => ":table",
                     "data" => ":data",
                 ],
-                "_data_context" => [
+                "@context" => [
                     "table" => ":table",
                     "data" => [
-                        "_data_source" => "fetch_and_transform",
-                        "_data_context" => [
+                        "@source" => "fetch_and_transform",
+                        "@context" => [
                             "params" => ":params",
                         ]
                     ]
@@ -390,11 +390,11 @@ class JsonComposeTest extends TestCase
         });
 
         $array = $this->json->getJson([
-            "_data_source" => "configs",
-            "_data_structure" => [
-                "_is_support_array" => true,
+            "@source" => "configs",
+            "@structure" => [
+                "@is_array" => true,
                 "row" => [
-                    "_data_source" => "insert_database_by_api"
+                    "@source" => "insert_database_by_api"
                 ]
             ]
         ]);
@@ -409,7 +409,7 @@ class JsonComposeTest extends TestCase
         ]);
 
         $array = $this->json->getJson([
-            "_data_source" => [
+            "@source" => [
                 [
                     "table" => "xxxxx",
                     "params" => [
@@ -417,10 +417,10 @@ class JsonComposeTest extends TestCase
                     ]
                 ]
             ],
-            "_data_structure" => [
-                "_is_support_array" => true,
+            "@structure" => [
+                "@is_array" => true,
                 "row" => [
-                    "_data_source" => "insert_database_by_api"
+                    "@source" => "insert_database_by_api"
                 ]
             ]
         ]);
@@ -431,7 +431,7 @@ class JsonComposeTest extends TestCase
             ],
         ]);
         $array = $this->json->getJson([
-            "_data_source" => [
+            "@source" => [
                 [
                     "table" => "xxxxx",
                     "params" => [
@@ -439,10 +439,10 @@ class JsonComposeTest extends TestCase
                     ]
                 ]
             ],
-            "_data_structure" => [
-                "_is_support_array" => true,
+            "@structure" => [
+                "@is_array" => true,
                 "row" => [
-                    "_data_source" => "insert_database_by_api"
+                    "@source" => "insert_database_by_api"
                 ]
             ]
         ]);
@@ -460,13 +460,13 @@ class JsonComposeTest extends TestCase
 
         $this->json->registerDataSource('fetch_and_transform', function ($json, $config) {
             return [
-                "_data_source" => "transform",
-                "_data_option" => [
+                "@source" => "transform",
+                "@option" => [
                     "data" => ":*"
                 ],
-                "_data_context" => [
-                    "_data_source" => "http",
-                    "_data_option" => [
+                "@context" => [
+                    "@source" => "http",
+                    "@option" => [
                         "params" => ":params"
                     ]
                 ]
@@ -474,20 +474,20 @@ class JsonComposeTest extends TestCase
         });
 
        $array = $this->json->getJson([
-            "_data_source" => "configs",
-            "_data_structure" => [
-                "_is_support_array" => true,
+            "@source" => "configs",
+            "@structure" => [
+                "@is_array" => true,
                 "row" => [
-                    "_data_context" => [
+                    "@context" => [
                         "table1" => ":table",
                         "data" => [
-                            "_data_source" => "fetch_and_transform",
-                            "_data_context" => [
+                            "@source" => "fetch_and_transform",
+                            "@context" => [
                                 "params" => ":params",
                             ]
                         ]
                     ],
-                    "_data_structure" => [
+                    "@structure" => [
                         "table" => ":table1",
                         "data" => ":data.*.id",
                     ]
@@ -521,19 +521,19 @@ class JsonComposeTest extends TestCase
 
 
         $array = $this->json->getJson([
-            "_data_source" => "configs",
-            "_data_structure" => [
-                "_is_support_array" => true,
+            "@source" => "configs",
+            "@structure" => [
+                "@is_array" => true,
                 "row" => [
-                    "_data_structure" => [
+                    "@structure" => [
                         "table" => ":table",
                         "data" => ":params.id",
                         "row" => [
-                            // "_data_source" => "fetch_and_transform",
-                            "_data_context" => [
+                            // "@source" => "fetch_and_transform",
+                            "@context" => [
                                 "params" => ":params",
                             ],
-                            "_data_structure" => [
+                            "@structure" => [
                                 "params" => ":params",
                                 "id" => ":params.id",
                             ]
@@ -572,19 +572,19 @@ class JsonComposeTest extends TestCase
 
 
         $array = $this->json->getJson([
-            "_data_source" => "configs",
-            "_data_structure" => [
-                "_is_support_array" => true,
+            "@source" => "configs",
+            "@structure" => [
+                "@is_array" => true,
                 "row" => [
-                    "_data_structure" => [
+                    "@structure" => [
                         "table" => ":table",
                         "data" => ":params.id",
                         "row" => [
-                            "_data_source" => "fetch_and_transform",
-                            "_data_context" => [
+                            "@source" => "fetch_and_transform",
+                            "@context" => [
                                 "params" => ":params",
                             ],
-                            "_data_structure" => [
+                            "@structure" => [
                                 "name" => ":*.name",
                                 "id" => ":*.id",
                             ]
@@ -632,20 +632,20 @@ class JsonComposeTest extends TestCase
         ], $array);
 
         $array = $this->json->getJson([
-            "_data_source" => "configs",
-            "_data_structure" => [
-                "_is_support_array" => true,
+            "@source" => "configs",
+            "@structure" => [
+                "@is_array" => true,
                 "row" => [
-                    "_data_structure" => [
+                    "@structure" => [
                         "table" => ":table",
                         "data" => ":params.id",
                         "row" => [
-                            "_data_source" => "fetch_and_transform",
-                            "_data_context" => [
+                            "@source" => "fetch_and_transform",
+                            "@context" => [
                                 "params" => ":params",
                             ],
-                            "_data_structure" => [
-                                "_is_support_array" => true,
+                            "@structure" => [
+                                "@is_array" => true,
 
                                 "name" => ":name",
                                 "id" => ":id",
@@ -698,20 +698,20 @@ class JsonComposeTest extends TestCase
 
 
         $array = $this->json->getJson([
-            "_data_source" => "configs",
-            "_data_structure" => [
-                "_is_support_array" => true,
+            "@source" => "configs",
+            "@structure" => [
+                "@is_array" => true,
                 "row" => [
-                    "_data_structure" => [
+                    "@structure" => [
                         "table" => ":table",
                         "data" => ":params.id",
                         "row" => [
-                            "_data_source" => "fetch_and_transform",
-                            "_data_context" => [
+                            "@source" => "fetch_and_transform",
+                            "@context" => [
                                 "params" => ":params",
                             ],
-                            "_data_structure" => [
-                                "_is_support_array" => true,
+                            "@structure" => [
+                                "@is_array" => true,
                                 [
                                     "name" => ":name",
                                     "id" => ":id",

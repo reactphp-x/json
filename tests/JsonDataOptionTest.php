@@ -7,7 +7,7 @@ use ReactphpX\Json\Json;
 
 
 /**
- * :_data_option 只能在_data_option 和 _data_sturcture 中使用
+ * :@option 只能在@option 和 @structure 中使用
  */
 class JsonDataOptionTest extends TestCase
 {
@@ -24,7 +24,7 @@ class JsonDataOptionTest extends TestCase
 
 
         $array = $this->json->getJson([
-            "_data_context" => [
+            "@context" => [
                 [
                     "code" => "601398",
                     "structure_key" => "mairui_gupiao_fsjys",
@@ -36,12 +36,12 @@ class JsonDataOptionTest extends TestCase
                     "type" => "15m"
                 ]
             ],
-            "_data_option" => [
+            "@option" => [
                 "name" => "工商银行"
             ],
-            "_data_structure" => [
-                "_is_support_array" => true,
-                "name" => ":_data_option.name",
+            "@structure" => [
+                "@is_array" => true,
+                "name" => ":@option.name",
                 "code" => ":code"
             ]
 
@@ -59,7 +59,7 @@ class JsonDataOptionTest extends TestCase
         ], $array);
 
         $array = $this->json->getJson([
-            "_data_context" => [
+            "@context" => [
                 [
                     "code" => "601398",
                     "structure_key" => "mairui_gupiao_fsjys",
@@ -71,13 +71,13 @@ class JsonDataOptionTest extends TestCase
                     "type" => "15m"
                 ]
             ],
-            "_data_option" => [
+            "@option" => [
                 "name" => "工商银行"
             ],
-            "_data_structure" => [
-                "_is_support_array" => true,
+            "@structure" => [
+                "@is_array" => true,
                 "name" => [
-                    "_data_structure" => ":_data_option.name"
+                    "@structure" => ":@option.name"
                 ],
                 "code" => ":code"
             ]
@@ -96,7 +96,7 @@ class JsonDataOptionTest extends TestCase
         ], $array);
 
         $array = $this->json->getJson([
-            "_data_context" => [
+            "@context" => [
                 [
                     "code" => "601398",
                     "structure_key" => "mairui_gupiao_fsjys",
@@ -108,16 +108,16 @@ class JsonDataOptionTest extends TestCase
                     "type" => "15m"
                 ]
             ],
-            "_data_option" => [
+            "@option" => [
                 "name" => "工商银行"
             ],
-            "_data_structure" => [
-                "_is_support_array" => true,
+            "@structure" => [
+                "@is_array" => true,
                 "name" => [
-                    "_data_option" => [
-                        "_data_option1" => ":_data_option",
+                    "@option" => [
+                        "_data_option1" => ":@option",
                     ],
-                    "_data_structure" => ":_data_option"
+                    "@structure" => ":@option"
                 ],
                 "code" => ":code"
             ]
@@ -149,7 +149,7 @@ class JsonDataOptionTest extends TestCase
 
 
         $array = $this->json->getJson([
-            "_data_context" => [
+            "@context" => [
                 [
                     "code" => "601398",
                     "structure_key" => "mairui_gupiao_fsjys",
@@ -161,15 +161,15 @@ class JsonDataOptionTest extends TestCase
                     "type" => "15m"
                 ]
             ],
-            "_data_option" => [
+            "@option" => [
                 "name" => "工商银行"
             ],
-            "_data_structure" => [
-                "_is_support_array" => true,
+            "@structure" => [
+                "@is_array" => true,
                 "row" => [
-                    "_data_option" => ":*",
-                    "_data_structure" => [
-                        "type" => ":_data_option.type",
+                    "@option" => ":*",
+                    "@structure" => [
+                        "type" => ":@option.type",
                         "code" => ":code"
                     ]
                 ],
@@ -198,7 +198,7 @@ class JsonDataOptionTest extends TestCase
 
 
         $array = $this->json->getJson([
-            "_data_context" => [
+            "@context" => [
                 [
                     "code" => "601398",
                     "structure_key" => "mairui_gupiao_fsjys",
@@ -210,17 +210,17 @@ class JsonDataOptionTest extends TestCase
                     "type" => "15m"
                 ]
             ],
-            "_data_option" => [
+            "@option" => [
                 "name" => "工商银行"
             ],
-            "_data_structure" => [
-                "_is_support_array" => true,
+            "@structure" => [
+                "@is_array" => true,
                 "row" => [
-                    // "_data_option" => ":*",
-                    "_data_structure" => ":*",
-                    "_data_context" => [
-                        "_data_option" => ":params",
-                        "_data_context" => [
+                    // "@option" => ":*",
+                    "@structure" => ":*",
+                    "@context" => [
+                        "@option" => ":params",
+                        "@context" => [
                             "params" => ":*",
                             "data" => [
                                 [
@@ -233,11 +233,11 @@ class JsonDataOptionTest extends TestCase
                                 ]
                             ],
                         ],
-                        "_data_structure" => [
-                            "_data_source" => ":data",
-                            "_data_structure" => [
-                                "_is_support_array" => true,
-                                "code" => ":_data_option.code",
+                        "@structure" => [
+                            "@source" => ":data",
+                            "@structure" => [
+                                "@is_array" => true,
+                                "code" => ":@option.code",
                                 "id" => ":id",
                                 "name" => ":name",
                             ]

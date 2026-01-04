@@ -7,10 +7,7 @@ class Test
     public function is_object($value)
     {
         if (is_array($value)) {
-            $jsonObjectString = json_encode($value);
-            if (strpos($jsonObjectString, "{") === 0) {
-                return true;
-            }
+           return !array_is_list($value);
         }
         return false;
     }
@@ -18,10 +15,7 @@ class Test
     public function is_array($value)
     {
         if (is_array($value)) {
-            $jsonObjectString = json_encode($value);
-            if (strpos($jsonObjectString, "[") === 0) {
-                return true;
-            }
+            return array_is_list($value);
         }
         return false;
     }
@@ -39,7 +33,7 @@ class Test
     public function is_data_source($value, $isObject = false)
     {
         if ($isObject || $this->is_object($value)) {
-            if (isset($value['_data_source']) && $value['_data_source']) {
+            if (isset($value['@source']) && $value['@source']) {
                 $_not_data_source = $value['_not_data_source'] ?? false;
                 if ($_not_data_source === true) {
                     return false;
@@ -54,7 +48,7 @@ class Test
     public function is_data_structure($value, $isObject = false)
     {
         if ($isObject || $this->is_object($value)) {
-            if (isset($value['_data_structure']) && $value['_data_structure']) {
+            if (isset($value['@structure']) && $value['@structure']) {
                 $_not_data_structure = $value['_not_data_structure'] ?? false;
                 if ($_not_data_structure === true) {
                     return false;
@@ -68,7 +62,7 @@ class Test
     public function is_data_context($value, $isObject = false)
     {
         if ($isObject || $this->is_object($value)) {
-            if (isset($value['_data_context']) && $value['_data_context']) {
+            if (isset($value['@context']) && $value['@context']) {
                 $_not_data_context = $value['_not_data_context'] ?? false;
                 if ($_not_data_context === true) {
                     return false;

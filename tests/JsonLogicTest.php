@@ -47,7 +47,7 @@ class JsonLogicTest extends TestCase
 
     protected function _logic($json, $config, $callback)
     {
-        $_data_option = $config['_data_option'] ?? [];
+        $_data_option = $config['@option'] ?? [];
         $ruleType = $_data_option['_rule']['type'] ?? 1;
         $dataRule = $_data_option['_rule']['data_rule'] ?? 1;
         if ($ruleType == 1) {
@@ -98,8 +98,8 @@ class JsonLogicTest extends TestCase
             ]
         ];
         $this->assertEquals($this->json->getJson([
-            "_data_source" => "user_logic1",
-            "_data_option" => [
+            "@source" => "user_logic1",
+            "@option" => [
                 "_rule" => [
                     "type" => 1, // type = 1 单个数据(item) 2 多个数据 (item)
                     "data_rule" => 1, // 1 不为空返回 2 追加
@@ -109,9 +109,9 @@ class JsonLogicTest extends TestCase
                     "name" => "Hello User",
                 ]
             ],
-            "_data_structure" => [
+            "@structure" => [
                 "item" => [
-                    "_data_structure" => ":item",
+                    "@structure" => ":item",
                 ]
             ]
         ]), $data);
@@ -124,16 +124,16 @@ class JsonLogicTest extends TestCase
             ]
         ];
         $this->assertEquals($this->json->getJson([
-            "_data_source" => "user_logic1",
-            "_data_option" => [
+            "@source" => "user_logic1",
+            "@option" => [
                 "_rule" => [
                     "type" => 1, // type = 1 单个数据(item) 2 多个数据 (item)
                     "data_rule" => 1 // 1 不为空返回 2 追加
                 ],
             ],
-            "_data_structure" => [
+            "@structure" => [
                 "item" => [
-                    "_data_structure" => ":item",
+                    "@structure" => ":item",
                 ]
             ]
         ]), $dataLogic);
@@ -147,8 +147,8 @@ class JsonLogicTest extends TestCase
             ]
         ];
         $this->assertEquals($this->json->getJson([
-            "_data_source" => "user_logic1",
-            "_data_option" => [
+            "@source" => "user_logic1",
+            "@option" => [
                 "_rule" => [
                     "type" => 1, // type = 1 单个数据(item) 2 多个数据 (item)
                     "data_rule" => 2, // 1 不为空返回 2 追加
@@ -159,9 +159,9 @@ class JsonLogicTest extends TestCase
                     "test" => "test"
                 ]
             ],
-            "_data_structure" => [
+            "@structure" => [
                 "item" => [
-                    "_data_structure" => ":item",
+                    "@structure" => ":item",
                 ]
             ]
         ]), $dataLogic);
@@ -181,8 +181,8 @@ class JsonLogicTest extends TestCase
             ]
         ];
         $this->assertEquals($this->json->getJson([
-            "_data_source" => "user_logic2",
-            "_data_option" => [
+            "@source" => "user_logic2",
+            "@option" => [
                 "_rule" => [
                     "type" => 2, // type = 1 单个数据(item) 2 多个数据 (item)
                     "data_rule" => 1, // 1 不为空返回 2 追加
@@ -195,9 +195,9 @@ class JsonLogicTest extends TestCase
 
                 ]
             ],
-            "_data_structure" => [
+            "@structure" => [
                 "data" => [
-                    "_data_structure" => ":data",
+                    "@structure" => ":data",
                 ]
             ]
         ]), $data);
@@ -213,16 +213,16 @@ class JsonLogicTest extends TestCase
             ]
         ];
         $this->assertEquals($this->json->getJson([
-            "_data_source" => "user_logic2",
-            "_data_option" => [
+            "@source" => "user_logic2",
+            "@option" => [
                 "_rule" => [
                     "type" => 2, // type = 1 单个数据(item) 2 多个数据 (item)
                     "data_rule" => 1 // 1 不为空返回 2 追加
                 ],
             ],
-            "_data_structure" => [
+            "@structure" => [
                 "data" => [
-                    "_data_structure" => ":data",
+                    "@structure" => ":data",
                 ]
             ]
         ]), $dataLogic);
@@ -243,8 +243,8 @@ class JsonLogicTest extends TestCase
             ]
         ];
         $this->assertEquals($this->json->getJson([
-            "_data_source" => "user_logic2",
-            "_data_option" => [
+            "@source" => "user_logic2",
+            "@option" => [
                 "_rule" => [
                     "type" => 2, // type = 1 单个数据(item) 2 多个数据 (item)
                     "data_rule" => 2, // 1 不为空返回 2 追加
@@ -256,9 +256,9 @@ class JsonLogicTest extends TestCase
                     ]
                 ],
             ],
-            "_data_structure" => [
+            "@structure" => [
                 "data" => [
-                    "_data_structure" => ":data",
+                    "@structure" => ":data",
                 ]
             ],
         ]), $dataLogic);

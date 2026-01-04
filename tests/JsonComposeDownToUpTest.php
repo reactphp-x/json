@@ -15,7 +15,7 @@ class JsonComposeDownToUpTest extends TestCase
         parent::setUp();
         $this->json = new Json();
         $this->json->registerDataSource('http', function ($json, $config) {
-            $_data_option = $config['_data_option'] ?? [];
+            $_data_option = $config['@option'] ?? [];
             $id = $_data_option['params']['id'] ?? 0;
             $apiDatas = [
                 '1' => [
@@ -50,15 +50,15 @@ class JsonComposeDownToUpTest extends TestCase
         });
 
         $this->json->registerDataSource('transform', function ($json, $config) {
-            $_data_option = $config['_data_option'] ?? [];
+            $_data_option = $config['@option'] ?? [];
             $data = $_data_option['data'] ?? [];
             // dd($config, $data);
 
             return $json->getJson([
-                "_data_source" => ":*",
-                "_data_context" => $data,
-                "_data_structure" => [
-                    "_is_support_array" => true,
+                "@source" => ":*",
+                "@context" => $data,
+                "@structure" => [
+                    "@is_array" => true,
                     "id" => ":id",
                     "name" => ":name",
                 ]
@@ -66,7 +66,7 @@ class JsonComposeDownToUpTest extends TestCase
         });
 
         $this->json->registerDataSource('insertDatabase', function ($json, $config) {
-            $_data_option = $config['_data_option'] ?? [];
+            $_data_option = $config['@option'] ?? [];
             $table = $_data_option['table'] ?? '';
             $data = $_data_option['data'] ?? [];
             // dd($config, $data);
@@ -96,38 +96,38 @@ class JsonComposeDownToUpTest extends TestCase
         // return;
         // 自下而上
         $array = $this->json->getJson([
-            "_data_source" => "configs",
-            "_data_structure" => [
-                "_is_support_array" => true,
+            "@source" => "configs",
+            "@structure" => [
+                "@is_array" => true,
                 "row" => [
-                    "_data_context" => [
+                    "@context" => [
                         "config" => ":*",
                         "http_data" => [
-                            "_data_source" => "http",
-                            "_data_option" => [
+                            "@source" => "http",
+                            "@option" => [
                                 "params" => ":params"
                             ],
                         ]
                     ],
-                    "_data_structure" => [
-                        "_data_context" => [
+                    "@structure" => [
+                        "@context" => [
                             "config" => ":config",
                             "transform_data" => [
-                                "_data_source" => "transform",
-                                "_data_option" => [
+                                "@source" => "transform",
+                                "@option" => [
                                     "data" => ":http_data"
                                 ]
                             ]
                         ],
-                        "_data_structure" => [
-                            "_data_context" => [
-                                "_data_source" => "insertDatabase",
-                                "_data_option" => [
+                        "@structure" => [
+                            "@context" => [
+                                "@source" => "insertDatabase",
+                                "@option" => [
                                     "table" => ":config.table",
                                     "data" => ":transform_data",
                                 ],
                             ],
-                            "_data_structure" => ":*"
+                            "@structure" => ":*"
 
                         ]
                     ]
@@ -150,21 +150,21 @@ class JsonComposeDownToUpTest extends TestCase
         // return;
         $this->json->registerDataStructure('fetch_and_transform', function ($json, $config) {
             return [
-                "_data_context" => [
+                "@context" => [
                     "config" => ":*",
                     "http_data" => [
-                        "_data_source" => "http",
-                        "_data_option" => [
+                        "@source" => "http",
+                        "@option" => [
                             "params" => ":params"
                         ],
                     ]
                 ],
-                "_data_structure" => [
-                    "_data_context" => [
+                "@structure" => [
+                    "@context" => [
                         "config" => ":config",
                         "transform_data" => [
-                            "_data_source" => "transform",
-                            "_data_option" => [
+                            "@source" => "transform",
+                            "@option" => [
                                 "data" => ":http_data"
                             ]
                         ]
@@ -174,22 +174,22 @@ class JsonComposeDownToUpTest extends TestCase
         });
 
         $array = $this->json->getJson([
-            "_data_source" => "configs",
-            "_data_structure" => [
-                "_is_support_array" => true,
+            "@source" => "configs",
+            "@structure" => [
+                "@is_array" => true,
                 "row" => [
-                    "_data_context" => [
-                        "_data_structure" => "fetch_and_transform",
+                    "@context" => [
+                        "@structure" => "fetch_and_transform",
                     ],
-                    "_data_structure" => [
-                        "_data_context" => [
-                            "_data_source" => "insertDatabase",
-                            "_data_option" => [
+                    "@structure" => [
+                        "@context" => [
+                            "@source" => "insertDatabase",
+                            "@option" => [
                                 "table" => ":config.table",
                                 "data" => ":transform_data",
                             ],
                         ],
-                        "_data_structure" => ":*"
+                        "@structure" => ":*"
 
                     ]
                     
@@ -212,21 +212,21 @@ class JsonComposeDownToUpTest extends TestCase
         // return ;
         $this->json->registerDataStructure('fetch_and_transform', function ($json, $config) {
             return [
-                "_data_context" => [
+                "@context" => [
                     "config" => ":*",
                     "http_data" => [
-                        "_data_source" => "http",
-                        "_data_option" => [
+                        "@source" => "http",
+                        "@option" => [
                             "params" => ":params"
                         ],
                     ]
                 ],
-                "_data_structure" => [
-                    "_data_context" => [
+                "@structure" => [
+                    "@context" => [
                         "config" => ":config",
                         "transform_data" => [
-                            "_data_source" => "transform",
-                            "_data_option" => [
+                            "@source" => "transform",
+                            "@option" => [
                                 "data" => ":http_data"
                             ]
                         ]
@@ -236,21 +236,21 @@ class JsonComposeDownToUpTest extends TestCase
         });
         $this->json->registerDataSource('fetch_and_transform', function ($json, $config) {
             return [
-                "_data_context" => [
+                "@context" => [
                     "config" => ":*",
                     "http_data" => [
-                        "_data_source" => "http",
-                        "_data_option" => [
+                        "@source" => "http",
+                        "@option" => [
                             "params" => ":params"
                         ],
                     ]
                 ],
-                "_data_structure" => [
-                    "_data_context" => [
+                "@structure" => [
+                    "@context" => [
                         "config" => ":config",
                         "transform_data" => [
-                            "_data_source" => "transform",
-                            "_data_option" => [
+                            "@source" => "transform",
+                            "@option" => [
                                 "data" => ":http_data"
                             ]
                         ]
@@ -261,47 +261,47 @@ class JsonComposeDownToUpTest extends TestCase
 
         $this->json->registerDataStructure('insert_database_by_api', function ($json, $config) {
             return [
-                "_data_context" => [
-                    "_data_structure" => "fetch_and_transform",
+                "@context" => [
+                    "@structure" => "fetch_and_transform",
                 ],
-                "_data_structure" => [
-                    "_data_context" => [
-                        "_data_source" => "insertDatabase",
-                        "_data_option" => [
+                "@structure" => [
+                    "@context" => [
+                        "@source" => "insertDatabase",
+                        "@option" => [
                             "table" => ":config.table",
                             "data" => ":transform_data",
                         ],
                     ],
-                    "_data_structure" => ":*"
+                    "@structure" => ":*"
                 ]
             ];
         });
 
         $this->json->registerDataSource('insert_database_by_api', function ($json, $config) {
             return [
-                "_data_context" => [
-                    "_data_source" => "fetch_and_transform",
+                "@context" => [
+                    "@source" => "fetch_and_transform",
                 ],
-                "_data_structure" => [
-                    "_data_context" => [
-                        "_data_source" => "insertDatabase",
-                        "_data_option" => [
+                "@structure" => [
+                    "@context" => [
+                        "@source" => "insertDatabase",
+                        "@option" => [
                             "table" => ":config.table",
                             "data" => ":transform_data",
                         ],
                     ],
-                    "_data_structure" => ":*"
+                    "@structure" => ":*"
                 ]
             ];
         });
 
         $array = $this->json->getJson([
-            "_data_source" => "configs",
-            "_data_structure" => [
-                "_is_support_array" => true,
+            "@source" => "configs",
+            "@structure" => [
+                "@is_array" => true,
                 "row" => [
-                    "_data_context" => ":*",
-                    "_data_structure" => "insert_database_by_api"
+                    "@context" => ":*",
+                    "@structure" => "insert_database_by_api"
                 ]
             ]
         ]);
@@ -314,11 +314,11 @@ class JsonComposeDownToUpTest extends TestCase
             ],
         ]);
         $array = $this->json->getJson([
-            "_data_source" => "configs",
-            "_data_structure" => [
-                "_is_support_array" => true,
+            "@source" => "configs",
+            "@structure" => [
+                "@is_array" => true,
                 "row" => [
-                    "_data_source" => "insert_database_by_api"
+                    "@source" => "insert_database_by_api"
                 ]
             ]
         ]);
@@ -332,16 +332,16 @@ class JsonComposeDownToUpTest extends TestCase
             ],
         ]);
         $array = $this->json->getJson([
-            "_data_source" => [
-                "_data_source" => "configs",
-                "_data_structure" => [
-                    "_is_support_array" => true,
+            "@source" => [
+                "@source" => "configs",
+                "@structure" => [
+                    "@is_array" => true,
                     "row" => [
-                        "_data_structure" => "insert_database_by_api"
+                        "@structure" => "insert_database_by_api"
                     ]
                 ]
             ],
-            "_data_structure" => ':*.row'
+            "@structure" => ':*.row'
         ]);
 
         // dd($array);
@@ -351,34 +351,34 @@ class JsonComposeDownToUpTest extends TestCase
         ]);
 
         $array = $this->json->getJson([
-            "_data_context" => [
-                "_data_source" => "configs",
-                "_data_structure" => [
-                    "_is_support_array" => true,
+            "@context" => [
+                "@source" => "configs",
+                "@structure" => [
+                    "@is_array" => true,
                     "row" => [
-                        "_data_structure" => "insert_database_by_api"
+                        "@structure" => "insert_database_by_api"
                     ]
                 ]
             ],
             
-            "_data_structure" => ':*.row'
+            "@structure" => ':*.row'
         ]);
 
         $this->assertEquals($array, [
            2,3
         ]);
         $array = $this->json->getJson([
-            "_data_context" => [
-                "_data_source" => "configs",
-                "_data_structure" => [
-                    "_is_support_array" => true,
+            "@context" => [
+                "@source" => "configs",
+                "@structure" => [
+                    "@is_array" => true,
                     "row" => [
-                        "_data_structure" => "insert_database_by_api"
+                        "@structure" => "insert_database_by_api"
                     ]
                 ]
             ],
-            "_data_source" => ":*.row",
-            "_data_structure" => ':*'
+            "@source" => ":*.row",
+            "@structure" => ':*'
         ]);
 
         $this->assertEquals($array, [
@@ -389,20 +389,20 @@ class JsonComposeDownToUpTest extends TestCase
     public function testDataSourceContext()
     {
         $array = $this->json->getJson([
-            "_data_source" => [
-                "_data_source" => ":http_data.*.id",
-                "_data_context" => [
+            "@source" => [
+                "@source" => ":http_data.*.id",
+                "@context" => [
                     "id" => 1,
                     "http_data" => [
-                        "_data_source" => "http",
-                        "_data_option" => [
+                        "@source" => "http",
+                        "@option" => [
                             "params" => [
                                 "id" => 1
                             ]
                         ],
                     ]
                 ],
-                "_data_structure" => ':*'
+                "@structure" => ':*'
             ],
         ]);
 
@@ -411,70 +411,70 @@ class JsonComposeDownToUpTest extends TestCase
         ]);
 
         $array = $this->json->getJson([
-            "_data_source" => [
+            "@source" => [
                 [
-                    "_data_source" => ":http_data.*.id",
-                    "_data_context" => [
+                    "@source" => ":http_data.*.id",
+                    "@context" => [
                         "id" => 1,
                         "http_data" => [
-                            "_data_source" => "http",
-                            "_data_option" => [
+                            "@source" => "http",
+                            "@option" => [
                                 "params" => [
                                     "id" => 1
                                 ]
                             ],
                         ]
                     ],
-                    "_data_structure" => ':*'
+                    "@structure" => ':*'
                 ],
                 [
-                    "_data_context" => [
+                    "@context" => [
                         "id" => 1,
                         "http_data" => [
-                            "_data_source" => "http",
-                            "_data_option" => [
+                            "@source" => "http",
+                            "@option" => [
                                 "params" => [
                                     "id" => 1
                                 ]
                             ],
                         ]
                     ], 
-                    "_data_structure" => ':id'
+                    "@structure" => ':id'
 
                 ],
                 [
-                    "_data_context" => [
+                    "@context" => [
                         "id" => 1,
                         "http_data" => [
-                            "_data_source" => "http",
-                            "_data_option" => [
+                            "@source" => "http",
+                            "@option" => [
                                 "params" => [
                                     "id" => 1
                                 ]
                             ],
-                            "_data_structure" => ':*.name'
+                            "@structure" => ':*.name'
 
                         ]
                     ], 
-                    "_data_structure" => ':http_data'
+                    "@structure" => ':http_data'
 
                 ]
             ],
-            "_data_structure" => [
+            "@structure" => [
                 ":*",
                 [
-                    "_data_context" => [
+                    "@context" => [
                         "id" => 1,
                         "http_data" => [
-                            "_data_source" => "http",
-                            "_data_option" => [
+                            "@source" => "http",
+                            "@option" => [
                                 "params" => [
                                     "id" => 1
                                 ]
                             ],
                         ]
                     ], 
-                    "_data_structure" => ':http_data.*.id'
+                    "@structure" => ':http_data.*.id'
 
                 ]
             ]
@@ -497,18 +497,18 @@ class JsonComposeDownToUpTest extends TestCase
         ]);
 
         $array = $this->json->getJson([
-            "_data_source" => "configs",
-            "_data_structure" => [
-                "_is_support_array" => true,
+            "@source" => "configs",
+            "@structure" => [
+                "@is_array" => true,
                 "id" => ":params.id",
                 [
-                    "_data_source" => "http",
-                    "_data_option" => [
+                    "@source" => "http",
+                    "@option" => [
                         "params" => [
                             "id" => ":params.id"
                         ]
                     ],
-                    "_data_structure" => ":*.id"
+                    "@structure" => ":*.id"
                 ]
             ]
         ]);
@@ -529,15 +529,15 @@ class JsonComposeDownToUpTest extends TestCase
         ]);
 
         $array = $this->json->getJson([
-            "_data_source" => "configs",
-            "_data_structure" => [
-                "_is_support_array" => true,
+            "@source" => "configs",
+            "@structure" => [
+                "@is_array" => true,
                 "id" => ":params.id",
                 [
-                    "_data_context" => [
+                    "@context" => [
                         "http_data" => [
-                            "_data_source" => "http",
-                            "_data_option" => [
+                            "@source" => "http",
+                            "@option" => [
                                 "params" => [
                                     "id" => ":params.id"
                                 ]
@@ -545,7 +545,7 @@ class JsonComposeDownToUpTest extends TestCase
                         ]
                     ],
                    
-                    "_data_structure" => ":http_data.*.id"
+                    "@structure" => ":http_data.*.id"
                 ]
             ]
         ]);
